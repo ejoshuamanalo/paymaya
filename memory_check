@@ -3,7 +3,7 @@
 TOTAL_MEMORY=$( free | grep Mem: | awk '{ print $2 }' )
 USED_MEMORY=$( free | grep Mem: | awk '{ print $3 }' )
 PERCENTAGE_USED=$(( $USED_MEMORY*100/$TOTAL_MEMORY ))
-
+echo $PERCENTAGE_USED
 usage() {
 	echo "Usage: $0 [ -c <0-100> ] [ -w <0-100> ] [ -e <email_address> ]" 1>&2
 }
@@ -15,8 +15,10 @@ do
 	  w) warning=${OPTARG} ;;
 	  e) email=${OPTARG} ;;
 	  :) echo "Error: -${OPTARG} requires an argument"
-	     usage ;;
-	  *) usage ;;
+	     usage
+	     exit ;;
+	  *) usage
+	     exit ;;
 	esac
 done
 
@@ -32,4 +34,14 @@ then
 	echo "Error: -e argument must be greater than -w argument"
 	usage
 	exit
+fi
+
+if [[ $PERCENTAGE_USED -ge $critical ]]
+then
+	exit 2
+elif [[ $PERCENTAGE_USED -ge $warning ]] && [[ $PERCENTAGE_USED -lt $critical ]]
+then
+	exit 1
+else
+	exit 0
 fi
