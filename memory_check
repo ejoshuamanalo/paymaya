@@ -4,6 +4,32 @@ TOTAL_MEMORY=$( free | grep Mem: | awk '{ print $2 }' )
 USED_MEMORY=$( free | grep Mem: | awk '{ print $3 }' )
 PERCENTAGE_USED=$(( $USED_MEMORY*100/$TOTAL_MEMORY ))
 
-echo $PERCENTAGE_USED
-echo $USED_MEMORY
-echo $TOTAL_MEMORY
+usage() {
+	echo "Usage: $0 [ -c <0-100> ] [ -w <0-100> ] [ -e <email_address> ]" 1>&2
+}
+
+while getopts ":c:w:e:" opt
+do
+	case $opt in
+	  c) critical=${OPTARG} ;;
+	  w) warning=${OPTARG} ;;
+	  e) email=${OPTARG} ;;
+	  :) echo "Error: -${OPTARG} requires an argument"
+	     usage ;;
+	  *) usage ;;
+	esac
+done
+
+if [[ -z $critical ]] || [[ -z $warning ]] || [[ -z $email ]]
+then
+	echo "Error: Missing parameter/s"
+	usage
+	exit
+fi
+
+if [[ $critical -lt $warning ]]
+then
+	echo "Error: -e argument must be greater than -w argument"
+	usage
+	exit
+fi
