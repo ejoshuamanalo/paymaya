@@ -2,5 +2,8 @@
 
 TOTAL_MEMORY=$( free | grep Mem: | awk '{ print $2 }' )
 USED_MEMORY=$( free | grep Mem: | awk '{ print $3 }' )
+PERCENTAGE_USED=$(( $USED_MEMORY*100/$TOTAL_MEMORY ))
 
+echo $PERCENTAGE_USED
+echo $USED_MEMORY
 echo $TOTAL_MEMORY
