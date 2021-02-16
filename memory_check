@@ -28,7 +28,8 @@ then
 	exit
 fi
 
-if [[ $critical -gt 100 || $critical -lt 0 || $warning -gt 100 || $warning -lt 0 ]]
+isnum='^[0-9]+$'
+if [[ ! $critical =~ $isnum || ! $warning =~ $isnum || $critical -gt 100 || $critical -lt 0 || $warning -gt 100 || $warning -lt 0 ]]
 then
 	echo "Error: -c and -w arguments must be integer values from 0 to 100"
 	usage
