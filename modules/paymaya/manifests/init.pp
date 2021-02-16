@@ -6,3 +6,4 @@ class paymaya (
 	contain paymaya::users
 	contain paymaya::scripts
 }
+
