@@ -1,7 +1,9 @@
-class paymaya::scripts {
-	$scripts_dir = '/home/monitor/scripts'
+class paymaya::scripts (
+	$scripts_dir = $paymaya::scripts_dir
+)
+{
 	exec { 'retrieve_script':
-		command => '/usr/bin/wget -O ${scripts_dir}/memory_check https://raw.githubusercontent.com/ejoshuamanalo/paymaya/master/memory_check',
+		command => "/usr/bin/wget -O ${scripts_dir}/memory_check https://raw.githubusercontent.com/ejoshuamanalo/paymaya/master/memory_check",
 		require => [Class[paymaya::packages],File[$scripts_dir]]
 	}
 	file { $scripts_dir:
