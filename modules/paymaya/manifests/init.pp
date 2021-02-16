@@ -1,5 +1,5 @@
 class paymaya (
-	Array $pkgs = ['vim','curl','git']
+	Array $pkgs = ['vim','curl','git','wget']
 )
 {
 	contain paymaya::packages
